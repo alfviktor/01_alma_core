@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export default function SignUpPage() {
   return (
-    <div className="relative flex items-center justify-center min-h-[80vh] w-full">
+    <div className="relative flex items-center justify-center min-h-[100vh] w-full">
       {/* Background Image */}
       <Image 
         src="/sign-up.webp"
