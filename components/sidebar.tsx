@@ -1,9 +1,15 @@
 import HistoryContainer from './history-container'
+import { HistoryList } from './history-list'
 
 export async function Sidebar() {
+  const enableSaveChatHistory = process.env.ENABLE_SAVE_CHAT_HISTORY === 'true'
+  if (!enableSaveChatHistory) {
+    return null
+  }
+
   return (
-    <div className="h-screen p-2 fixed top-0 right-0 flex-col justify-center pb-24 hidden lg:flex">
-      <HistoryContainer />
+    <div className="p-2">
+      <HistoryList userId="anonymous" />
     </div>
   )
 }

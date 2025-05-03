@@ -6,7 +6,7 @@ import { IconLogo } from './ui/icons'
 
 export const Header: React.FC = async () => {
   return (
-    <header className="fixed w-full p-2 flex justify-between items-center z-10 backdrop-blur lg:backdrop-blur-none bg-background/80 lg:bg-transparent">
+    <header className="sticky top-0 p-2 flex justify-between items-center z-10 backdrop-blur bg-background/80">
       <div>
         <a href="/">
           <IconLogo className={cn('w-5 h-5')} />

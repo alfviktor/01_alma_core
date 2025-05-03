@@ -1,5 +1,6 @@
 import Footer from '@/components/footer'
 import Header from '@/components/header'
+import { Sidebar } from '@/components/sidebar'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
 import { cn } from '@/lib/utils'
@@ -58,10 +59,18 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex flex-col flex-1">
-            <Header />
-            <main className="flex flex-col flex-1 min-h-0">{children}</main>
-            <Footer />
+          <div className="flex flex-1 min-h-0">
+            {/* Left sidebar */}
+            <div className="w-64 border-r flex-shrink-0 hidden lg:block">
+              <Sidebar />
+            </div>
+            
+            {/* Main content area with header and footer */}
+            <div className="flex flex-col flex-1 min-h-0">
+              <Header />
+              <main className="flex flex-col flex-1 min-h-0">{children}</main>
+              <Footer />
+            </div>
           </div>
           <Toaster />
         </ThemeProvider>
