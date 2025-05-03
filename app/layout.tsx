@@ -8,32 +8,38 @@ import {
   ClerkProvider
 } from '@clerk/nextjs'
 import type { Metadata, Viewport } from 'next'
-import { Inter as FontSans } from 'next/font/google'
+import { GeistSans } from 'geist/font/sans';
 import './globals.css'
 
 
-const fontSans = FontSans({
-  subsets: ['latin'],
-  variable: '--font-sans'
-})
-
-const title = 'Morphic'
+const title = 'Alma for Teaching'
 const description =
-  'A fully open-source AI-powered answer engine with a generative UI.'
+  'Alma - Teaching Made Wonderfully Simple'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://morphic.sh'),
+  metadataBase: new URL('https://almaskole.no'),
   title,
   description,
   openGraph: {
     title,
-    description
+    description,
+    siteName: 'Alma for Teaching',
+    type: 'website',
+    url: 'https://almaskole.no',
+    images: [
+      {
+        url: '/opengraph.webp',
+        width: 1200,
+        height: 630,
+        alt: 'Alma Skole'
+      }
+    ]
   },
   twitter: {
     title,
     description,
     card: 'summary_large_image',
-    creator: '@miiura'
+    creator: 'alfviktor.com'
   }
 }
 
@@ -51,12 +57,9 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
+      <html lang="en" className={GeistSans.className} suppressHydrationWarning>
         <body
-          className={cn(
-            'min-h-screen bg-background font-sans antialiased',
-            fontSans.variable
-          )}
+          className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300 dark:bg-background-dark dark:text-foreground-dark"
         >
           <ThemeProvider
             attribute="class"
