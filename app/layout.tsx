@@ -1,7 +1,8 @@
+import { AppSidebar } from '@/components/app-sidebar'
 import Footer from '@/components/footer'
 import Header from '@/components/header'
-import { Sidebar } from '@/components/sidebar'
 import { ThemeProvider } from '@/components/theme-provider'
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { Toaster } from '@/components/ui/sonner'
 import { cn } from '@/lib/utils'
 import type { Metadata, Viewport } from 'next'
@@ -49,7 +50,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          'min-h-screen flex flex-col font-sans antialiased',
+          'min-h-screen bg-background font-sans antialiased',
           fontSans.variable
         )}
       >
@@ -59,20 +60,25 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex flex-1 min-h-0">
-            {/* Left sidebar */}
-            <div className="w-64 border-r flex-shrink-0 hidden lg:block">
-              <Sidebar />
-            </div>
-            
-            {/* Main content area with header and footer */}
-            <div className="flex flex-col flex-1 min-h-0">
+          <SidebarProvider>
+            {/* Following the pattern from dashboard example */}
+            <AppSidebar />
+            <SidebarInset className="flex flex-col min-h-screen">
+              {/* Header with sidebar trigger */}
               <Header />
-              <main className="flex flex-col flex-1 min-h-0">{children}</main>
-              <Footer />
-            </div>
-          </div>
-          <Toaster />
+              
+              {/* Main content with wider layout */}
+              <div className="flex flex-col flex-1 w-full">
+                <main className="flex-1 overflow-auto h-full w-full">
+                  <div className="mx-auto px-4 w-full h-full py-4" style={{ maxWidth: '1600px' }}>
+                    {children}
+                  </div>
+                </main>
+                <Footer />
+              </div>
+            </SidebarInset>
+            <Toaster />
+          </SidebarProvider>
         </ThemeProvider>
       </body>
     </html>
