@@ -7,8 +7,8 @@ import { cn } from '@/lib/utils'
 import {
   ClerkProvider
 } from '@clerk/nextjs'
+import { GeistSans } from 'geist/font/sans'
 import type { Metadata, Viewport } from 'next'
-import { GeistSans } from 'geist/font/sans';
 import './globals.css'
 
 
@@ -29,8 +29,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: '/opengraph.webp',
-        width: 1200,
-        height: 630,
+        width: 3840,
+        height: 2160,
         alt: 'Alma Skole'
       }
     ]
