@@ -3,7 +3,7 @@ import Header from '@/components/header'
 import { ThemeProvider } from '@/components/theme-provider'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { Toaster } from '@/components/ui/sonner'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/index'
 import {
   ClerkProvider
 } from '@clerk/nextjs'
