@@ -76,16 +76,23 @@ export function useAutoScroll({
     }
   }, [dependency, scrollContainer])
 
-  // Auto-scroll on updates only (no streaming scroll)
+  // Auto-scroll on updates and during streaming
   useEffect(() => {
     if (!isAutoScroll) return
     scrollToBottom()
-    
-    // No interval for streaming - removed
-    return undefined
+    let intervalId: ReturnType<typeof setInterval> | undefined
+    if (isAutoScroll && isStreaming() && isLoading) {
+      intervalId = setInterval(scrollToBottom, intervalMs)
+    }
+    return () => {
+      if (intervalId) clearInterval(intervalId)
+    }
   }, [
     dependency,
+    isLoading,
     isAutoScroll,
+    isStreaming,
+    intervalMs,
     scrollToBottom
   ])
 
