@@ -56,7 +56,7 @@ export function Chat({
 
   const isLoading = status === 'submitted' || status === 'streaming'
 
-  const { anchorRef, isAutoScroll } = useAutoScroll({
+  const { anchorRef, isAutoScroll, scrollToBottom } = useAutoScroll({
     isLoading,
     dependency: messages.length,
     isStreaming: () => status === 'streaming',
@@ -128,7 +128,9 @@ export function Chat({
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setData(undefined)
-    handleSubmit(e)
+    // Manually trigger smooth scroll on user submission
+    scrollToBottom()
+    handleSubmit(e) // Call the useChat handleSubmit
   }
 
   return (

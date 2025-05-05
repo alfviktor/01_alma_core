@@ -135,6 +135,8 @@ export function ChatMessages({
           ) : (
             <Spinner />
           ))}
+        {/* Add a spacer div before the anchor for whitespace */}
+        <div className="h-[50vh]" /> {/* Spacer for ~50% viewport height */}
         <div ref={anchorRef} />
       </div>
     </div>

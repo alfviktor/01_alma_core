@@ -12,6 +12,7 @@ interface UseAutoScrollOptions {
 interface UseAutoScrollReturn {
   anchorRef: React.RefObject<HTMLDivElement>
   isAutoScroll: boolean
+  scrollToBottom: () => void
 }
 
 /**
@@ -65,16 +66,16 @@ export function useAutoScroll({
     if (anchorRef.current) {
       if (scrollContainer?.current) {
         anchorRef.current.scrollIntoView({
-          behavior: dependency > 5 ? 'instant' : 'smooth',
+          behavior: 'smooth', // Always smooth
           block: 'end'
         })
       } else {
         anchorRef.current.scrollIntoView({
-          behavior: dependency > 5 ? 'instant' : 'smooth'
+          behavior: 'smooth' // Always smooth
         })
       }
     }
-  }, [dependency, scrollContainer])
+  }, [scrollContainer]) // dependency is no longer needed here for behavior
 
   // Auto-scroll on updates only (no streaming scroll)
   useEffect(() => {
@@ -89,5 +90,9 @@ export function useAutoScroll({
     scrollToBottom
   ])
 
-  return { anchorRef, isAutoScroll }
+  return {
+    anchorRef,
+    isAutoScroll,
+    scrollToBottom
+  }
 }
