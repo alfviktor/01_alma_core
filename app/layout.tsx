@@ -3,10 +3,10 @@ import Header from '@/components/header'
 import { ThemeProvider } from '@/components/theme-provider'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { Toaster } from '@/components/ui/sonner'
-import { cn } from '@/lib/utils/index'
 import {
   ClerkProvider
 } from '@clerk/nextjs'
+import { Analytics } from "@vercel/analytics/react"
 import { GeistSans } from 'geist/font/sans'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
@@ -86,6 +86,7 @@ export default function RootLayout({
               <Toaster />
             </SidebarProvider>
           </ThemeProvider>
+          <Analytics />
         </body>
       </html>
     </ClerkProvider>
