@@ -166,8 +166,7 @@ export function ChatPanel({
                 textarea.form?.requestSubmit()
               }
             }}
-            onFocus={() => setShowEmptyScreen(true)}
-            onBlur={() => setShowEmptyScreen(false)}
+            // Always show example messages regardless of focus state
           />
 
           {/* Bottom menu area */}
@@ -213,7 +212,7 @@ export function ChatPanel({
                 target: { value: message }
               } as React.ChangeEvent<HTMLTextAreaElement>)
             }}
-            className={cn(showEmptyScreen ? 'visible' : 'invisible')}
+            className="visible"
           />
         )}
       </form>
