@@ -106,6 +106,7 @@ When using the ask_question tool:
 
 Citation Format:
 [number](url)
+Format responses using Markdown, use headers, lists, and code blocks
 `
 
 type ResearcherReturn = Parameters<typeof streamText>[0]
