@@ -1,169 +1,135 @@
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { BookOpen, MessageCircle, Mail, ClipboardList } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogClose
-} from '@/components/ui/dialog'
+  Command,
+  CommandEmpty,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
+import { Box, Flex } from '@radix-ui/themes';
+import { BookOpen, ClipboardList, Mail, MessageCircle } from 'lucide-react';
+import * as React from 'react';
 
-/**
- * Example categories and detailed prompts for teachers using Alma
- */
 const promptCategories = [
   {
     id: 'teaching',
     icon: BookOpen,
     name: 'Undervisning',
     prompts: [
-      {
-        title: 'Differensiert undervisningsplan',
-        prompt: 'Lag en differensiert undervisningsplan for matematikk om brøk i 4. klasse som er tilpasset den norske læreplanen.'
-      },
-      {
-        title: 'Vurderingsopplegg',
-        prompt: 'Lag et formativt vurderingsopplegg for å måle elevenes forståelse av naturfag i 5. klasse.'
-      },
-      {
-        title: 'Rubrikk for prosjektvurdering',
-        prompt: 'Lag en vurderingsrubrikk for et gruppeprosjekt i samfunnsfag om lokalhistorie.'
-      },
-      {
-        title: 'Utforskende læringsaktiviteter',
-        prompt: 'Utvikle utforskende læringsaktiviteter for en naturfagstime om økosystemer.'
-      }
-    ]
+      { title: 'Differensiert undervisningsplan', prompt: 'Lag en differensiert undervisningsplan for matematikk om brøk i 4. klasse som er tilpasset den norske læreplanen.' },
+      { title: 'Vurderingsopplegg', prompt: 'Lag et formativt vurderingsopplegg for å måle elevenes forståelse av naturfag i 5. klasse.' },
+      { title: 'Rubrikk for prosjektvurdering', prompt: 'Lag en vurderingsrubrikk for et gruppeprosjekt i samfunnsfag om lokalhistorie.' },
+      { title: 'Utforskende læringsaktiviteter', prompt: 'Utvikle utforskende læringsaktiviteter for en naturfagstime om økosystemer.' },
+    ],
   },
   {
     id: 'feedback',
     icon: MessageCircle,
     name: 'Tilbakemelding',
     prompts: [
-      {
-        title: 'Konstruktiv tilbakemelding',
-        prompt: 'Hjelp meg med å skrive konstruktiv tilbakemelding til en elev som strever med å skrive fullstendige avsnitt.'
-      },
-      {
-        title: 'Intervensjonsstrategi',
-        prompt: 'Lag en intervensjonsstrategi for en elev som sliter med grunnleggende tallforståelse.'
-      },
-      {
-        title: 'Støtte for komplekse konsepter',
-        prompt: 'Design støttemateriell for å hjelpe elever med å forstå brøkdivisjon.'
-      },
-      {
-        title: 'Støtte for flerspråklige elever',
-        prompt: 'Gi meg tips for å støtte flerspråklige elever i norskundervisningen.'
-      }
-    ]
+      { title: 'Konstruktiv tilbakemelding', prompt: 'Formuler konstruktiv tilbakemelding til en elev som sliter med motivasjon i norskfaget.' },
+      { title: 'Tilbakemelding på essay', prompt: 'Gi tilbakemelding på et essay om den industrielle revolusjon for en elev på ungdomstrinnet.' },
+      { title: 'Strategier for elevsamtaler', prompt: 'Utvikle strategier for effektive elevsamtaler med fokus på faglig utvikling.' },
+      { title: 'Tilbakemeldingsmal', prompt: 'Lag en mal for å gi rask og presis tilbakemelding på ukentlige innleveringer.' },
+    ],
   },
   {
     id: 'communication',
     icon: Mail,
-    name: 'Foreldrekommunikasjon',
+    name: 'Kommunikasjon',
     prompts: [
-      {
-        title: 'Positiv tilbakemelding',
-        prompt: 'Skriv en positiv e-post til foreldre om barnets nylige forbedring i klasseromsdeltakelse.'
-      },
-      {
-        title: 'Ukentlig nyhetsbrev',
-        prompt: 'Lag et ukentlig klasseromsnyhetsoppdatering til foreldre om hva vi har lært denne uken.'
-      },
-      {
-        title: 'Informasjon om aktiviteter',
-        prompt: 'Skriv en melding om kommende klasseaktiviteter og arrangementer.'
-      },
-      {
-        title: 'Håndtere utfordrende situasjoner',
-        prompt: 'Hjelp meg å formulere et diplomatisk svar på en utfordrende forelder som er bekymret for mengden lekser.'
-      }
-    ]
+      { title: 'Foreldremøteagenda', prompt: 'Lag en agenda for et foreldremøte for 7. klasse med fokus på overgangen til ungdomsskolen.' },
+      { title: 'Informasjonsbrev til hjemmet', prompt: 'Skriv et informasjonsbrev til foresatte om en kommende klassetur.' },
+      { title: 'Konflikthåndteringsplan', prompt: 'Utvikle en plan for å håndtere konflikter mellom elever på en konstruktiv måte.' },
+      { title: 'Samarbeidsmal for lærere', prompt: 'Lag en mal for samarbeid mellom faglærere for å sikre tverrfaglig undervisning.' },
+    ],
   },
   {
-    id: 'admin',
+    id: 'planning',
     icon: ClipboardList,
-    name: 'Administrative oppgaver',
+    name: 'Planlegging',
     prompts: [
-      {
-        title: 'Atferdsobservasjonsmal',
-        prompt: 'Hjelp meg med å lage en mal for dokumentasjon av elevenes atferdsobservasjoner under gruppearbeid.'
-      },
-      {
-        title: 'Elevrapport',
-        prompt: 'Lag en mal for å dokumentere elevens fremgang i matematikk dette semesteret.'
-      },
-      {
-        title: 'Oppsummering av læreplanen',
-        prompt: 'Oppsummer kompetansemålene for norsk i 3. trinn for en administrativ rapport.'
-      },
-      {
-        title: 'IOP-observasjoner',
-        prompt: 'Lag en mal for IOP-observasjoner (Individuell opplæringsplan) for en elev med lærevansker.'
-      }
-    ]
-  }
-]
+      { title: 'Årsplan for engelsk', prompt: 'Lag en årsplan for engelskfaget i 6. klasse som dekker alle kompetansemål.' },
+      { title: 'Prosjektplan for temauke', prompt: 'Utvikle en detaljert prosjektplan for en temauke om bærekraftig utvikling.' },
+      { title: 'Vikartimeopplegg', prompt: 'Lag et engasjerende vikartimeopplegg for en dobbelttime i KRLE for 9. klasse.' },
+      { title: 'Ressursliste for digital læring', prompt: 'Samle en liste over nyttige digitale ressurser for undervisning i programmering på mellomtrinnet.' },
+    ],
+  },
+];
+
+const categoryColorClasses: { [key: string]: string } = {
+  teaching: 'bg-accent-undervisning text-accent-undervisning-foreground border-accent-undervisning-border hover:bg-[#5BBFD7] hover:text-white hover:border-[#43A5BB]',
+  feedback: 'bg-accent-tilbakemelding text-accent-tilbakemelding-foreground border-accent-tilbakemelding-border hover:bg-[#2B9A66] hover:text-white hover:border-[#227C52]',
+  communication: 'bg-accent-kommunikasjon text-accent-kommunikasjon-foreground border-accent-kommunikasjon-border hover:bg-[#A144AF] hover:text-white hover:border-[#863895]',
+  planning: 'bg-accent-planlegging text-accent-planlegging-foreground border-accent-planlegging-border hover:bg-[#3358D4] hover:text-white hover:border-[#2A46A7]',
+};
+
 export function EmptyScreen({
   submitMessage,
-  className
+  className,
 }: {
-  submitMessage: (message: string) => void
-  className?: string
+  submitMessage: (message: string) => void;
+  className?: string;
 }) {
+  const [openPopovers, setOpenPopovers] = React.useState<Record<string, boolean>>({});
+
+  const handlePopoverOpenChange = (categoryId: string, isOpen: boolean) => {
+    setOpenPopovers(prev => ({ ...prev, [categoryId]: isOpen }));
+  };
 
   return (
-    <div className={`mx-auto w-full transition-all ${className}`}>
-      <div className="bg-background p-2">
-        {/* Main category buttons with integrated dialogs */}
-        <div className="flex flex-wrap justify-center gap-4 mt-6 mb-6 max-w-2xl mx-auto">
-          {promptCategories.map((category) => (
-            <Dialog key={category.id}>
-              <DialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="flex items-center gap-3 h-auto py-3 px-6 rounded-full text-sm font-medium border border-input hover:bg-accent hover:text-accent-foreground w-fit"
-                >
-                  {(() => {
-                    const IconComponent = category.icon;
-                    return <IconComponent className="w-4 h-4" />;
-                  })()}
+    <Box className={cn('w-full transition-all', className)} p="3">
+      <Flex wrap="wrap" justify="center" gap="2" mx="auto" style={{ maxWidth: '42rem' }}>
+        {promptCategories.map((category) => (
+          <Popover
+            key={category.id}
+            open={openPopovers[category.id] || false}
+            onOpenChange={(isOpen) => handlePopoverOpenChange(category.id, isOpen)}
+          >
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={openPopovers[category.id] || false}
+                className={cn(
+                  'text-sm rounded-full shadow-none focus:ring-0 px-4 font-medium border',
+                  categoryColorClasses[category.id] || 'bg-secondary text-secondary-foreground border-border'
+                )}
+              >
+                <span className="flex items-center gap-1">
+                  {React.createElement(category.icon, { width: 14, height: 14 })}
                   {category.name}
-                </Button>
-              </DialogTrigger>
-              
-              <DialogContent className="max-w-md p-0 gap-0 overflow-hidden border">
-                <DialogHeader className="p-4 border-b flex flex-row items-center">
-                  <div className="flex items-center gap-2">
-                    {(() => {
-                      const IconComponent = category.icon;
-                      return <IconComponent className="w-5 h-5" />;
-                    })()}
-                    <DialogTitle>{category.name}</DialogTitle>
-                  </div>
-                </DialogHeader>
-                
-                <div className="overflow-y-auto max-h-[50vh]">
+                </span>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[250px] p-0" align="center">
+              <Command>
+                <CommandList>
+                  <CommandEmpty>No prompts found.</CommandEmpty>
                   {category.prompts.map((promptItem, idx) => (
-                    <DialogClose key={idx} asChild>
-                      <button
-                        className="w-full text-left px-4 py-4 hover:bg-slate-50 border-b last:border-b-0"
-                        onClick={() => submitMessage(promptItem.prompt)}
-                      >
-                        {promptItem.title}
-                      </button>
-                    </DialogClose>
+                    <CommandItem
+                      key={idx}
+                      value={promptItem.title}
+                      onSelect={() => {
+                        submitMessage(promptItem.prompt);
+                        handlePopoverOpenChange(category.id, false);
+                      }}
+                      className="text-xs cursor-pointer font-medium"
+                    >
+                      {promptItem.title}
+                    </CommandItem>
                   ))}
-                </div>
-              </DialogContent>
-            </Dialog>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        ))}
+      </Flex>
+    </Box>
+  );
 }

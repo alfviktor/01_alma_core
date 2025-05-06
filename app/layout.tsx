@@ -6,6 +6,8 @@ import { Toaster } from '@/components/ui/sonner'
 import {
   ClerkProvider
 } from '@clerk/nextjs'
+import { Theme } from '@radix-ui/themes'
+import '@radix-ui/themes/styles.css'
 import { Analytics } from "@vercel/analytics/react"
 import { GeistSans } from 'geist/font/sans'
 import type { Metadata, Viewport } from 'next'
@@ -67,7 +69,8 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <SidebarProvider>
+            <Theme accentColor="pink" radius="large">
+              <SidebarProvider>
               {/* Following the pattern from dashboard example */}
               <AppSidebar />
               <SidebarInset className="flex flex-col min-h-screen">
@@ -84,7 +87,8 @@ export default function RootLayout({
                 </div>
               </SidebarInset>
               <Toaster />
-            </SidebarProvider>
+              </SidebarProvider>
+            </Theme>
           </ThemeProvider>
           <Analytics />
         </body>

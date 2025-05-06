@@ -50,6 +50,26 @@ const config = {
   					border: 'hsl(var(--accent-blue-border))'
   				}
   			},
+  			'accent-undervisning': {
+  				DEFAULT: '#F2FAFB',
+  				foreground: '#0797B9',
+  				border: '#CAF1F6'
+  			},
+  			'accent-tilbakemelding': {
+  				DEFAULT: '#F4FBF6',
+  				foreground: '#2B9A66',
+  				border: '#C4E8D1'
+  			},
+  			'accent-kommunikasjon': {
+  				DEFAULT: '#FDF7FD',
+  				foreground: '#A144AF',
+  				border: '#F2D1F3'
+  			},
+  			'accent-planlegging': {
+  				DEFAULT: '#F7F9FF',
+  				foreground: '#3358D4',
+  				border: '#D2DEFF'
+  			},
   			popover: {
   				DEFAULT: 'hsl(var(--popover))',
   				foreground: 'hsl(var(--popover-foreground))'
